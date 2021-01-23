@@ -2,8 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import React  from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Axios from 'axios';
-import {Button } from 'native-base';
-import { useState } from 'react';
+import {Button, Spinner } from 'native-base';
+import { useState , useEffect } from 'react';
+import User from './comp/user';
 
 
 export default function App() {
@@ -12,45 +13,59 @@ export default function App() {
     try{
      const {data} = await  Axios.get('https://randomuser.me/api/') ;
      const details = data.results[0];
+    //  console.log(details);
      setDetails(details);
     } catch(error){
          console.warn(error);
     }
+    
   };
-  return (
+
+  useEffect(()=>{
+    fetchDetails();
+  }, [] )
+
+  if(!details)
+  {
+    return(
+      <View style={styles.container}> 
+       <Spinner/>
+      </View>
+    )
+  }else{
+    return (
     <>
     <StatusBar hidden={false} />
 
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+     
+
+      <View>
+        <User />
+        <Button rounded 
+        style={styles.button} 
+        onPress={()=> fetchDetails()}> 
+       <Text>New User</Text>
+        </Button>
+      </View>
     </View>
     </>
   );
+    }
 }
 
   const styles = StyleSheet.create({
-    card: {
-      width: '90%',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      backgroundColor: '#4f8a8b',
-      borderColor: '#4f8a8b',
-      borderWidth: 2,
+    container:{
+    flex:1,
+    justifyContent:"center",
+    alignItems:"center",
+    backgroundColor:"#222831",
+
     },
-    cardItem: {
-      backgroundColor: '#4f8a8b',
+    button:{
+     marginTop: 30,
+     paddingHorizontal: 30,
+
     },
-    image: {
-      width: 150,
-      height: 150,
-      borderRadius: 150 / 2,
-      overflow: 'hidden',
-      borderWidth: 3,
-      borderColor: '#fbd46d',
-      marginTop: -50,
-    },
-    text: {
-      color: '#eeeeee',
-    },
+   
   });
