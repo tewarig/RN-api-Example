@@ -40,14 +40,14 @@ export default function App() {
     <View style={styles.container}>
      
 
-      <View>
-        <User />
+     
+        <User details={details}/>
         <Button rounded 
         style={styles.button} 
         onPress={()=> fetchDetails()}> 
        <Text>New User</Text>
         </Button>
-      </View>
+     
     </View>
     </>
   );
@@ -65,6 +65,7 @@ export default function App() {
     button:{
      marginTop: 30,
      paddingHorizontal: 30,
+     alignSelf: "center"
 
     },
    
